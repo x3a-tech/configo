@@ -62,6 +62,29 @@ type S3 struct {
 	SecretKey string `yaml:"secretKey" env-required:"true"`
 }
 
+type Kafka struct {
+	Brokers     []string `yaml:"brokers" env-separator:"," env-required:"true"`
+	GroupID     string   `yaml:"groupId" env-required:"true"`
+	Topics      []string `yaml:"topics" env-separator:"," env-required:"true"`
+	StartOffset string   `yaml:"startOffset" env-default:"latest"` // 'latest' или 'earliest'
+
+	MinBytes int           `yaml:"minBytes" env-default:"10000"`    // 10KB - Минимальный размер пакета для Fetch
+	MaxBytes int           `yaml:"maxBytes" env-default:"10000000"` // 10MB - Максимальный размер пакета для Fetch
+	MaxWait  time.Duration `yaml:"maxWait" env-default:"1s"`        // Макс. время ожидания MinBytes
+
+	// Настройки коммитов и группы
+	CommitInterval    time.Duration `yaml:"commitInterval" env-default:"1s"`    // Интервал авто-коммита (0 - отключает авто-коммит)
+	HeartbeatInterval time.Duration `yaml:"heartbeatInterval" env-default:"3s"` // Частота отправки heartbeat брокеру
+	SessionTimeout    time.Duration `yaml:"sessionTimeout" env-default:"30s"`   // Таймаут сессии консьюмера
+	RebalanceTimeout  time.Duration `yaml:"rebalanceTimeout" env-default:"60s"` // Таймаут для ребалансировки
+
+	// Сетевые настройки и попытки
+	DialTimeout  time.Duration `yaml:"dialTimeout" env-default:"3s"`   // Таймаут подключения к брокеру
+	ReadTimeout  time.Duration `yaml:"readTimeout" env-default:"30s"`  // Таймаут чтения сообщений
+	WriteTimeout time.Duration `yaml:"writeTimeout" env-default:"10s"` // Таймаут записи (для коммитов и т.д.)
+	MaxAttempts  int           `yaml:"maxAttempts" env-default:"3"`    // Макс. кол-во попыток для некоторых операций
+}
+
 type Ws struct {
 	Port               int     `yaml:"port" env-required:"true"`
 	MaxOneIpConnection int     `yaml:"maxOneIpConnection" env-required:"true"`
