@@ -62,7 +62,17 @@ type S3 struct {
 	SecretKey string `yaml:"secretKey" env-required:"true"`
 }
 
-type Kafka struct {
+type KafkaProducer struct {
+	Brokers      []string      `yaml:"brokers" env-separator:"," env-required:"true"`
+	RequiredAcks int           `yaml:"requiredAcks" env-default:"1"` // Уровень подтверждения: 0=None, 1=Leader, -1=All
+	Async        bool          `yaml:"async" env-default:"false"`
+	BatchSize    int           `yaml:"batchSize" env-default:"100"`
+	BatchTimeout time.Duration `yaml:"batchTimeout" env-default:"1s"`
+	WriteTimeout time.Duration `yaml:"writeTimeout" env-default:"10s"`
+	MaxAttempts  int           `yaml:"maxAttempts" env-default:"3"`
+}
+
+type KafkaConsumer struct {
 	Brokers     []string `yaml:"brokers" env-separator:"," env-required:"true"`
 	GroupID     string   `yaml:"groupId" env-required:"true"`
 	Topics      []string `yaml:"topics" env-separator:"," env-required:"true"`
@@ -72,13 +82,11 @@ type Kafka struct {
 	MaxBytes int           `yaml:"maxBytes" env-default:"10000000"` // 10MB - Максимальный размер пакета для Fetch
 	MaxWait  time.Duration `yaml:"maxWait" env-default:"1s"`        // Макс. время ожидания MinBytes
 
-	// Настройки коммитов и группы
 	CommitInterval    time.Duration `yaml:"commitInterval" env-default:"1s"`    // Интервал авто-коммита (0 - отключает авто-коммит)
 	HeartbeatInterval time.Duration `yaml:"heartbeatInterval" env-default:"3s"` // Частота отправки heartbeat брокеру
 	SessionTimeout    time.Duration `yaml:"sessionTimeout" env-default:"30s"`   // Таймаут сессии консьюмера
 	RebalanceTimeout  time.Duration `yaml:"rebalanceTimeout" env-default:"60s"` // Таймаут для ребалансировки
 
-	// Сетевые настройки и попытки
 	DialTimeout  time.Duration `yaml:"dialTimeout" env-default:"3s"`   // Таймаут подключения к брокеру
 	ReadTimeout  time.Duration `yaml:"readTimeout" env-default:"30s"`  // Таймаут чтения сообщений
 	WriteTimeout time.Duration `yaml:"writeTimeout" env-default:"10s"` // Таймаут записи (для коммитов и т.д.)
