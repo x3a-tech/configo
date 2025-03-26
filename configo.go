@@ -96,7 +96,7 @@ type KafkaConsumer struct {
 type KafkaTopics struct {
 	List              []string `yaml:"list" env-separator:"," env-required:"true"`
 	NumPartitions     int      `yaml:"numPartitions" env-required:"true"`
-	ReplicationFactor int      `yaml:"numPartitions" env-required:"true"`
+	ReplicationFactor int      `yaml:"replicationFactor" env-required:"true"`
 }
 
 type Ws struct {
