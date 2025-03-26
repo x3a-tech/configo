@@ -93,6 +93,12 @@ type KafkaConsumer struct {
 	MaxAttempts  int           `yaml:"maxAttempts" env-default:"3"`    // Макс. кол-во попыток для некоторых операций
 }
 
+type KafkaTopics struct {
+	List              []string `yaml:"list" env-separator:"," env-required:"true"`
+	NumPartitions     int      `yaml:"numPartitions" env-required:"true"`
+	ReplicationFactor int      `yaml:"numPartitions" env-required:"true"`
+}
+
 type Ws struct {
 	Port               int     `yaml:"port" env-required:"true"`
 	MaxOneIpConnection int     `yaml:"maxOneIpConnection" env-required:"true"`
