@@ -60,6 +60,7 @@ type S3 struct {
 	Region    string `yaml:"region" env-required:"true"`
 	AccessKey string `yaml:"accessKey" env-required:"true"`
 	SecretKey string `yaml:"secretKey" env-required:"true"`
+	ProxyUrl  string `yaml:"proxyUrl"`
 }
 
 type KafkaProducer struct {
