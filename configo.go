@@ -99,6 +99,11 @@ type KafkaTopics struct {
 	ReplicationFactor int      `yaml:"replicationFactor" env-required:"true"`
 }
 
+type Grpc struct {
+	Host string `yaml:"host" env-required:"true"`
+	Port int    `yaml:"port" env-required:"true"`
+}
+
 type Ws struct {
 	Port               int     `yaml:"port" env-required:"true"`
 	MaxOneIpConnection int     `yaml:"maxOneIpConnection" env-required:"true"`
