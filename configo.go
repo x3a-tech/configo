@@ -13,7 +13,6 @@ type App struct {
 }
 
 type Logger struct {
-	Level         int    `yaml:"level" env-default:"0"`
 	Dir           string `yaml:"dir" env-default:"logs"`
 	MaxSize       int    `yaml:"maxSize" env-default:"10"`
 	MaxBackups    int    `yaml:"maxBackups" env-default:"3"`
