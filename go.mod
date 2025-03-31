@@ -1,6 +1,6 @@
 module github.com/x3a-tech/configo
 
-go 1.23.0
+go 1.24.1
 
 require github.com/ilyakaznacheev/cleanenv v1.5.0
 
