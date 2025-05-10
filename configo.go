@@ -8,7 +8,7 @@ import (
 )
 
 type Config interface {
-	App() App
+	Env() string
 }
 
 type App struct {
@@ -365,7 +365,7 @@ func MustLoad[TConfig Config]() (*TConfig, *Env) {
 		panic("Ошибка загрузки конфига: " + err.Error())
 	}
 
-	env, err := NewEnv(cfg.App().Env)
+	env, err := NewEnv(cfg.Env())
 	if err != nil {
 		panic("Ошибка создания окружения: " + err.Error())
 	}
