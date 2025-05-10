@@ -7,7 +7,12 @@ import (
 	"time"
 )
 
+type Config interface {
+	App() App
+}
+
 type App struct {
+	Env     string `yaml:"env" env-required:"true"`
 	Name    string `yaml:"name" env-required:"true"`
 	Version string `yaml:"version" env-required:"true"`
 }
@@ -343,7 +348,7 @@ type WsSession struct {
 	MaxLifetime time.Duration `yaml:"maxLifetime" env-default:"0s"`
 }
 
-func MustLoad[TConfig any]() *TConfig {
+func MustLoad[TConfig Config]() (*TConfig, *Env) {
 	path := fetchConfigPath()
 
 	if path == "" {
@@ -360,7 +365,12 @@ func MustLoad[TConfig any]() *TConfig {
 		panic("Ошибка загрузки конфига: " + err.Error())
 	}
 
-	return &cfg
+	env, err := NewEnv(cfg.App().Env)
+	if err != nil {
+		panic("Ошибка создания окружения: " + err.Error())
+	}
+
+	return &cfg, env
 }
 
 func fetchConfigPath() string {
